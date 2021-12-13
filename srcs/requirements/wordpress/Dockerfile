@@ -13,12 +13,12 @@ RUN wget https://wordpress.org/latest.tar.gz
 RUN tar -xvf latest.tar.gz \
 	&& mv ./wordpress /tmp \
 	&& rm latest.tar.gz \
-	&&mkdir -p var/www/ \
-	&&chmod 755 -R /var/www/wordpress \
-	&& chmod -R www-data:www-data /var/www/wordpress
+	&&mkdir -p var/www/ 
 
-COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
+COPY ./conf/wp-config.php /var/www/wordpress
 COPY ./tools/setWP.sh ./
+RUN chmod 755 -R /var/www/wordpress \
+	&&chmod -R www-data:www-data /var/www/wordpress
 RUN chmod +x ./setWP.sh
 RUN 	sed -i "/listen =/d" /etc/php/7.3/fpm/pool.d/www.conf
 RUN 	echo "listen = 9000" >> /etc/php/7.3/fpm/pool.d/www.conf
