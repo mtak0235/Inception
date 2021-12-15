@@ -17,54 +17,75 @@
  *
  * @package WordPress
  */
+
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define( 'DB_NAME', getenv('WP_DB_NAME'));
+
 /** MySQL database username */
-define( 'DB_USER', getenv('WP_USER'));
+define( 'DB_USER', getenv('MYSQL_USER'));
+
 /** MySQL database password */
-define('DB_PASSWORD', getenv('WP_USER_PASSWORD'));
+define( 'DB_PASSWORD', getenv('MYSQL_PASSWORD'));
+
 /** MySQL hostname */
-define('DB_HOST', getenv('DOMAIN_NAME'));
+define( 'DB_HOST', getenv('DB_HOST'));
+
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
-/** The Database Collate type. Do not change this if in doubt. */
+
+/** The Database Collate type. Don't change this if in doubt. */
 define( 'DB_COLLATE', '' );
 
-# setting security keys
+/**#@+
+ * Authentication Unique Keys and Salts.
+ *
+ * Change these to different unique phrases!
+ * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
+ * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
+ *
+ * @since 2.6.0
+ */
+define( 'AUTH_KEY',         'put your unique phrase here' );
+define( 'SECURE_AUTH_KEY',  'put your unique phrase here' );
+define( 'LOGGED_IN_KEY',    'put your unique phrase here' );
+define( 'NONCE_KEY',        'put your unique phrase here' );
+define( 'AUTH_SALT',        'put your unique phrase here' );
+define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
+define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
+define( 'NONCE_SALT',       'put your unique phrase here' );
 
-define('AUTH_KEY',         'sg[Wf9X_4+>XTCP?c$-Wq2kF}U6.];&>7]7B:;_}{I4tf~v&[XK-mG<a}4I=dX^J' );
-define('SECURE_AUTH_KEY',  'JDIdzS:L?1k<v%7*|a)h-cD{N=TH2VH mFF!tZ /v9fraUqV}Y3mpO)A!R/G|[d2' );
-define('LOGGED_IN_KEY',    'V-7IcWD`-VEHfFQDOcB@RQ__+8&/mt:plDh(A3~UG%-(1{b_|hu7D|MW|U10PSm>' );
-define('NONCE_KEY',        '=T?nK{-$+(=kJLO~-]l4{[[HrRdN97.>>_dc@f,#9Y#3]s9,_$j}R0V.(zQ~|Etl' );
-define('AUTH_SALT',        'e8KaM,~)($j~=@m>?2*^:@JeRr(ZG<lFOH*<dEQu&*+l<k/m;5HZGp}S%#x90!m+' );
-define('SECURE_AUTH_SALT', 'P{z){ih-xmN+WK(ERfi+J`Y)D3.KF]Un-L^)*k+FIUZQt7#2xTk`8!q^^W7|t9[m' );
-define('LOGGED_IN_SALT',   'K1e)bYqLf-;SDUOi3!D8~4p=^XoE3.8-21<z9vZ+DJl<<CV:)k^!^Mk{U&}3q%H-' );
-define('NONCE_SALT',       '_Ia/iuPYgw0#/wChs:&YrDBTA473v(/c&FFYo+q.=AE;Ls_=k*>C-D)ZU=8r_#1G' );
+/**#@-*/
 
-# Advanced options
+/**
+ * WordPress Database Table prefix.
+ *
+ * You can have multiple installations in one database if you give each
+ * a unique prefix. Only numbers, letters, and underscores please!
+ */
+$table_prefix = 'wp_';
 
-/* setting table prefix (It is possible to have multiple installations in one database if you give each a unique prefix.)
-	ONLY NUMBERS, LETTERS AND UNDERSCORES */
-
-$table_prefix = ${WP_TABLE_PREFIX};
-
-# WP_DISABLE_FATAL_ERROR_HANDLER (here, is deactivated)
-
+/**
+ * For developers: WordPress debugging mode.
+ *
+ * Change this to true to enable the display of notices during development.
+ * It is strongly recommended that plugin and theme developers use WP_DEBUG
+ * in their development environments.
+ *
+ * For information on other constants that can be used for debugging,
+ * visit the documentation.
+ *
+ * @link https://wordpress.org/support/article/debugging-in-wordpress/
+ */
 define( 'WP_DEBUG', false );
-if ( WP_DEBUG ) {
-	define( 'WP_DEBUG_LOG', true );
-	define( 'WP_DEBUG_DISPLAY', false );
-	@ini_set( 'display_errors', 0 );
+
+/* That's all, stop editing! Happy publishing. */
+
+/** Absolute path to the WordPress directory. */
+if ( ! defined( 'ABSPATH' ) ) {
+	define( 'ABSPATH', __DIR__ . '/' );
 }
-
-# ABSPATH = path of the WordPress directory
-
-/* Absolute path to the Wordpress directory */
-
-if ( !defined('ABSPATH') )
-	define('ABSPATH',dirname(__FILE__), '/');
-
-/* Sets up WordPress vars & included files */
-
-require_once(ABSPATH . 'wp-settings.php');
+define('WP_SITEURL', 'https://' . $_SERVER['HTTP_HOST']);
+define('WP_HOME', 'https://' . $_SERVER['HTTP_HOST']);
+/** Sets up WordPress vars and included files. */
+require_once ABSPATH . 'wp-settings.php';

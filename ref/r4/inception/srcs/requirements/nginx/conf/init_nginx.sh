@@ -1,1 +1,0 @@
-cp tmp/default /etc/nginx/sites-enabled/default

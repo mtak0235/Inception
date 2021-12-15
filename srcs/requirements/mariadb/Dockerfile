@@ -1,16 +1,18 @@
-FROM		debian:buster
-
-LABEL maintainer="mtak@student.42seoul.kr"
-
-RUN			apt-get update && apt-get -y upgrade
-RUN 		apt-get -y install mariadb-server
-
-COPY		./tools/setupDB.sh ./setupDB.sh
-RUN			chmod +x ./setupDB.sh
-
-COPY		./conf/my.cnf ./etc/mysql/my.cnf
-RUN			chmod +rx ./etc/mysql/my.cnf
-
+FROM debian:buster
 EXPOSE 3306
-
-ENTRYPOINT ["./setupDB.sh"]
+ARG WP_DB_NAME
+ARG MYSQL_ROOT_PASSWORD
+ARG MYSQL_PASSWORD
+ARG MYSQL_USER
+ENV WP_DB_NAME=${WP_DB_NAME}
+ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+ENV MYSQL_PASSWORD=${MYSQL_PASSWORD}
+ENV MYSQL_USER=${MYSQL_USER}
+RUN apt-get update
+RUN apt-get install -y mariadb-server
+COPY ./conf/wordpress.sql /
+COPY ./tools/config.sh /
+RUN  sh  /config.sh
+COPY ./tools/start.sh /
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
+ENTRYPOINT ["sh", "start.sh"]
