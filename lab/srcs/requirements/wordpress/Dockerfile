@@ -2,9 +2,9 @@ FROM debian:buster
 
 LABEL maintainer="mtak@student.42seoul.kr"
 
-RUN apt-get update && apt-get -y upgrade
+RUN apt-get update && apt-get -yq upgrade
 
-RUN apt-get install -y php-fpm \
+RUN apt-get install -yq php-fpm \
 					php-mysql \
 					wget \
 					tar

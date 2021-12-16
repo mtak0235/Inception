@@ -1,7 +1,7 @@
 FROM debian:buster
 EXPOSE 443
 COPY ./tools/install.sh .
-COPY ./tools/start.sh .
-RUN bash install.sh
+RUN chmod 777 ./install.sh
+RUN install.sh
 COPY ./conf/default /etc/nginx/sites-available/
-ENTRYPOINT ["bash", "start.sh"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
