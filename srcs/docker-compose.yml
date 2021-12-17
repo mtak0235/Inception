@@ -1,47 +1,43 @@
-version: "3"
-networks:
-    inception_net:
+version: '3'
 services:
+    mariadb:
+        container_name: mariadb_con
+        networks:
+            - inception_net
+        env_file:
+            - .env
+        build:
+            context: ./requirements/mariadb
+        volumes:
+            - mariadb_vol:/var/lib/mysql/
+        restart: unless-stopped
     wordpress:
+        depends_on:
+            - mariadb
+        container_name: wordpress_con
         networks:
             - inception_net
         env_file:
             - .env
         build:
             context: requirements/wordpress
-        ports:
-            - 9000:9000
         volumes:
-            - wordpress_vol:/var/www/html
+            - wordpress_vol:/var/www/wordpress
         restart: unless-stopped
     nginx:
+        depends_on:
+            - wordpress
+        container_name: nginx_con
         networks:
             - inception_net
-        build:
-            context: requirements/nginx
         env_file:
             - .env
-        ports: 
-            - 443:443
-        volumes:
-            - wordpress_vol:/var/www/html
-        restart: unless-stopped
-    mariadb:
-        image: mariadb
         build:
-            context: ./requirements/mariadb
-            args:
-              - WP_DB_NAME=${WP_DB_NAME}
-              - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-              - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-              - MYSQL_USER=${MYSQL_USER}
-        container_name: mariadb
-        ports:
-            - 3306:3306
+            context: requirements/nginx
+        ports: 
+            - "443:443"
         volumes:
-            - mariadb_vol:/var/lib/mysql/
-        networks:
-            - inception_net
+            - wordpress_vol:/var/www/wordpress
         restart: unless-stopped
 volumes:
     wordpress_vol:
@@ -49,10 +45,14 @@ volumes:
         driver_opts:
             type: 'none'
             o: 'bind'
-            device: '/home/mtak/data/wp'
+            device: '/home/mtak/data/wordpress'
     mariadb_vol:
         driver: local
         driver_opts:
             type: 'none'
             o: 'bind'
             device: '/home/mtak/data/mariadb'
+networks:
+    inception_net:
+        driver: bridge
+

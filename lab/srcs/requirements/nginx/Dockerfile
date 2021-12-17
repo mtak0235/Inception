@@ -2,9 +2,9 @@ FROM debian:buster
 
 LABEL maintainer="mtak@student.42seoul.kr"
 
-RUN apt-get update && apt-get -y upgrade
+RUN apt-get update && apt-get -yq upgrade
 
-RUN apt-get install -y nginx \
+RUN apt-get install -yq nginx \
 					openssl
 
 COPY ./conf/nginx.conf /etc/nginx/sites-available/default

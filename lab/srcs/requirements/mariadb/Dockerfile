@@ -2,8 +2,8 @@ FROM		debian:buster
 
 LABEL maintainer="mtak@student.42seoul.kr"
 
-RUN			apt-get update && apt-get -y upgrade
-RUN 		apt-get -y install mariadb-server
+RUN			apt-get update && apt-get -yq upgrade
+RUN 		apt-get -yq install mariadb-server
 
 COPY		./tools/setupDB.sh ./setupDB.sh
 RUN			chmod +x ./setupDB.sh

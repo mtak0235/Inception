@@ -1,16 +1,51 @@
-include ./srcs/.env
-SRC = cd srcs && docker-compose -f docker-compose.yml 
-all :
-	sudo mkdir -p $(DB_VOL)
-	sudo mkdir -p $(WP_VOL)
-	sudo chmod 777 /etc/hosts
-	sudo echo "127.0.0.1  " $(DOMAIN_NAME) >> /etc/hosts
-	${SRC} up -d
-up :
-	${SRC} up -d
+HOMEDIR = /home/mtak
+
+all: start
+
 start:
-	${SRC} start
+	@echo
+	@echo "WARNING: you need to run with sudo"
+	@echo
+	@sleep 1
+	@echo "adding mtak.42.fr to hosts..."
+	sudo echo '127.0.0.1 mtak.42.fr' >> /etc/hosts;
+	sudo echo '127.0.0.1 www.mtak.42.fr' >> /etc/hosts;	
+	@echo "creating volume dirs..."
+	sudo mkdir -p $(HOMEDIR)/data/wordpress
+	sudo mkdir -p $(HOMEDIR)/data/mariadb
+	@echo "building..."
+	cd ./srcs/ && docker-compose up --build
+
+build:
+	cd ./srcs/ &&  docker-compose up --build
+
+up:
+	@echo "starting containers..."
+	cd ./srcs/ && docker-compose up
+
 down:
-	${SRC} down
+	@echo "stopping containers..."
+	cd ./srcs/ && docker-compose down
+
 ps:
-	${SRC} ps
+	cd ./srcs/ && docker-compose ps
+
+rmvol: down
+	docker volume rm $$(docker volume ls -q);
+	sudo rm -R $(HOMEDIR)/data/wordpress;\
+	sudo rm -R $(HOMEDIR)/data/mariadb;\
+	mkdir -p $(HOMEDIR)/data/wordpress;\
+	mkdir -p $(HOMEDIR)/data/mariadb;
+
+clean:	
+	docker stop $$(docker ps -qa);\
+	docker rm $$(docker ps -qa);\
+	docker rmi -f $$(docker images -qa);\
+	docker network rm $$(docker network ls -q);\
+	docker volume rm $$(docker volume ls -q);\
+	sudo rm -R $(HOMEDIR)/data/wordpress;\
+	sudo rm -R $(HOMEDIR)/data/mariadb;
+
+re: rmvol start
+
+.PHONY: start build up down clean re ps
