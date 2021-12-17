@@ -1,6 +1,6 @@
 FROM debian:buster
 EXPOSE 3306
-RUN apt-get update && apt-get -yq upgrade
+RUN apt-get update
 RUN apt-get install -yq mariadb-server
 COPY ./tools/start.sh /
 RUN chmod 777 ./start.sh
