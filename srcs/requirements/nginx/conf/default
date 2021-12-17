@@ -6,6 +6,7 @@ server {
 		index index.php index.html index.htm;
 		root /var/www/wordpress;
 
+		ssl on;
 		ssl_certificate /etc/ssl/certs/mtak.crt;
 		ssl_certificate_key /etc/ssl/private/mtak.key;
 		ssl_protocols TLSv1.3;
