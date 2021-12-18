@@ -3,9 +3,6 @@ HOMEDIR = /home/mtak
 all: start
 
 start:
-	@echo
-	@echo "WARNING: you need to run with sudo"
-	@echo
 	@sleep 1
 	@echo "adding mtak.42.fr to hosts..."
 	@sudo echo '127.0.0.1 mtak.42.fr' >> /etc/hosts;
