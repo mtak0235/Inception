@@ -2,6 +2,7 @@ version: '3'
 services:
     mariadb:
         container_name: mariadb_con
+        image: mariadb
         networks:
             - inception_net
         env_file:
@@ -15,6 +16,7 @@ services:
         depends_on:
             - mariadb
         container_name: wordpress_con
+        image: wordpress
         networks:
             - inception_net
         env_file:
@@ -28,6 +30,7 @@ services:
         depends_on:
             - wordpress
         container_name: nginx_con
+        image: nginx
         networks:
             - inception_net
         env_file:

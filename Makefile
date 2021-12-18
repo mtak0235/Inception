@@ -14,21 +14,21 @@ start:
 	@sudo mkdir -p $(HOMEDIR)/data/wordpress
 	@sudo mkdir -p $(HOMEDIR)/data/mariadb
 	@echo "building..."
-	cd ./srcs/ && docker-compose up --build
+	docker-compose -f ./srcs/docker-compose.yml up --build
 
 build:
-	cd ./srcs/ &&  docker-compose up --build
+	docker-compose -f ./srcs/docker-compose.yml up --build
 
 up:
 	@echo "starting containers..."
-	cd ./srcs/ && docker-compose up
+	docker-compose -f ./srcs/docker-compose.yml up
 
 down:
 	@echo "stopping containers..."
-	cd ./srcs/ && docker-compose down
+	docker-compose -f ./srcs/docker-compose.yml down
 
 ps:
-	cd ./srcs/ && docker-compose ps
+	docker-compose -f ./srcs/docker-compose.yml ps
 
 rmvol: down
 	docker volume rm $$(docker volume ls -q);
